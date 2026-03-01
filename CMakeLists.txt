@@ -26,6 +26,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         registerwindow.h registerwindow.cpp registerwindow.ui
         passwordutil.h passwordutil.cpp
         dashboardwindow.h dashboardwindow.cpp dashboardwindow.ui
+        envloader.h envloader.cpp
+        appdbcontext.h appdbcontext.cpp
+        .env.example
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET AppLoginSample1 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

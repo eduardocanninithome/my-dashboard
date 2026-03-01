@@ -14,15 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("MyLoginApp.db");
-
-    if (!db.open()) {
-        qDebug() << "Erro ao abrir banco de dados";
-    } else {
-        qDebug() << "BANCO ABRIU COM SUCESSO!";
-    }
 }
 
 MainWindow::~MainWindow()
