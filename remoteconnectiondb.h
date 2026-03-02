@@ -1,9 +1,9 @@
-#ifndef APPDBCONTEXT_H
-#define APPDBCONTEXT_H
+#ifndef REMOTECONNECTIONDB_H
+#define REMOTECONNECTIONDB_H
 
 #include <QSqlDatabase>
 
-class AppDbContext
+class RemoteConnectionDb
 {
 public:
     static bool abrirConexaoBanco();

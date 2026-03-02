@@ -1,10 +1,10 @@
-#include "appdbcontext.h"
+#include "remoteconnectiondb.h"
 #include "envloader.h"
 
 #include <QSqlError>
 #include <QDebug>
 
-bool AppDbContext::abrirConexaoBanco()
+bool RemoteConnectionDb::abrirConexaoBanco()
 {
     QSqlDatabase db;
 
@@ -35,7 +35,7 @@ bool AppDbContext::abrirConexaoBanco()
     return true;
 }
 
-QSqlDatabase AppDbContext::database()
+QSqlDatabase RemoteConnectionDb::database()
 {
     return QSqlDatabase::database();
 }

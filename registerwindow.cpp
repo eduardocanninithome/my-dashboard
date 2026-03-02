@@ -7,31 +7,12 @@
 #include <QMessageBox>
 #include "passwordutil.h"
 
-RegisterWindow::RegisterWindow(QWidget *parent)
-    : QDialog(parent)
-    , ui(new Ui::RegisterWindow)
-{
-    ui->setupUi(this);
-
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("MyLoginApp.db");
-
-    if (!db.open()) {
-        qDebug() << "Erro ao abrir banco de dados";
-    } else {
-        qDebug() << "BANCO ABRIU COM SUCESSO!";
+    RegisterWindow::RegisterWindow(QWidget *parent)
+        : QDialog(parent)
+        , ui(new Ui::RegisterWindow)
+    {
+        ui->setupUi(this);
     }
-
-    QSqlQuery query;
-
-    query.exec(
-        "CREATE TABLE IF NOT EXISTS users ("
-        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "nome TEXT,"
-        "email TEXT UNIQUE,"
-        "senha TEXT)"
-    );
-}
 
 RegisterWindow::~RegisterWindow()
 {

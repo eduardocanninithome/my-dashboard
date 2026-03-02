@@ -8,6 +8,8 @@
 #include <QMessageBox>
 #include "passwordutil.h"
 #include "dashboardwindow.h"
+#include "remoteconnectiondb.h"
+#include "localconnectiondb.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -36,7 +38,7 @@ void MainWindow::on_btnLogin_clicked()
         return;
     }
 
-    QSqlQuery checkQuery;
+    QSqlQuery checkQuery(RemoteConnectionDb::database());
 
     checkQuery.prepare(
         "SELECT * FROM users WHERE email = :email"
@@ -47,7 +49,7 @@ void MainWindow::on_btnLogin_clicked()
     checkQuery.exec();
 
     if (checkQuery.next()) {
-        // QString emailDb = checkQuery.value("email").toString();
+        QString emailDb = checkQuery.value("email").toString();
         QString senhaDb = checkQuery.value("senha").toString();
 
         if (PasswordUtil::hashPassword(senha) != senhaDb) {
@@ -60,12 +62,35 @@ void MainWindow::on_btnLogin_clicked()
             return;
         }
 
+        QSqlQuery sessionQuery(LocalConnectionDb::database());
+
+        sessionQuery.prepare(
+            "INSERT INTO session (user_id, nome, email, token) "
+            "VALUES (:user_id, :nome, :email, :token)"
+        );
+
+        sessionQuery.bindValue(":user_id", checkQuery.value("id").toString());
+        sessionQuery.bindValue(":nome", checkQuery.value("nome").toString());
+        sessionQuery.bindValue(":email", emailDb);
+        sessionQuery.bindValue(":token", "token");
+
+        sessionQuery.exec();
+
+        if (!sessionQuery.exec()) {
+            QMessageBox::critical(
+                this,
+                "Erro",
+                sessionQuery.lastError().text()
+            );
+
+            return;
+        }
+
         DashboardWindow *dashboard = new DashboardWindow();
 
         dashboard->show();
 
         this->close();
-
     } else {
         QMessageBox::critical(
             this,

@@ -1,7 +1,10 @@
 #include <QApplication>
+#include <QSqlQuery>
 #include "mainwindow.h"
 #include "envloader.h"
-#include "appdbcontext.h"
+#include "remoteconnectiondb.h"
+#include "localconnectiondb.h"
+#include "dashboardwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,9 +15,22 @@ int main(int argc, char *argv[])
 
     EnvLoader::load(envPath);
 
-    AppDbContext::abrirConexaoBanco();
+    RemoteConnectionDb::abrirConexaoBanco();
+    LocalConnectionDb::abrirConexaoBanco();
+
+    QSqlQuery query(LocalConnectionDb::database());
+
+    query.exec("SELECT id FROM session LIMIT 1");
+
+    if (query.next()) {
+        DashboardWindow *dashboard = new DashboardWindow();
+        dashboard->show();
+
+        return a.exec();
+    }
 
     MainWindow w;
     w.show();
+
     return a.exec();
 }
